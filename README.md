@@ -1,10 +1,10 @@
-# GAN Walkthrough
+# GAN Walkthrough (DCGAN & WGAN-GP)
 
 This is a walkthrough for people new to deep learning and GAN, to learn about and be able to run their own GAN. Disclaimer: All of the below is purely for educational purposes!
 
 For the full blogpost, refer to: [https://www.yinglinglow.com/blog/2018/02/13/GAN-walkthrough](https://www.yinglinglow.com/blog/2018/02/13/GAN-walkthrough)
 
-Full credits go to [Rowel Atienza](https://github.com/roatienza/Deep-Learning-Experiments/blob/master/Experiments/Tensorflow/GAN/dcgan_mnist.py) for DCGAN and [keras-contrib](https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py) for WGAN-GP code.
+Full credits go to [Rowel Atienza](https://github.com/roatienza/Deep-Learning-Experiments/blob/master/Experiments/Tensorflow/GAN/dcgan_mnist.py) for DCGAN code and [keras-contrib](https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py) for WGAN-GP code.
 
 1. [Obtaining Dataset](#obtaining-dataset)
 2. [Cleaning Dataset](#cleaning-dataset)
