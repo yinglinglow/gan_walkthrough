@@ -54,25 +54,40 @@ This function resizes and centre crops all images in the path, and saves them in
 To run: e.g. resize_centre('/Users/xxx/to_resize')
 """
 
+def remove_transparency(im, bg_colour=(255, 255, 255)):
+    """ Support function to convert transparency layer to white colour """
+    from PIL import Image
+    if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info):
+        alpha = im.convert('RGBA').split()[-1]
+        bg = Image.new("RGBA", im.size, bg_colour + (255,))
+        bg.paste(im, mask=alpha)
+        return bg
+    else:
+        return im
+
 
 def resize_centre(path):
     import os
     from PIL import Image, ImageOps
 
-    # check if directory to save resized images into exists, if not create it
-    directory = 'resized/'
-    if not os.path.exists(directory): 
-        os.makedirs(directory)
-
-    listing = [f for f in os.listdir(path) if not f.startswith('.')]
     i = 0
     height = 56
 
+    # check if directory to save resized images into exists, if not create it
+    directory = path + '_' + str(height) + '/'
+    if not os.path.exists(directory): 
+        os.makedirs(directory)
+
+    listing = [f for f in os.listdir(path) if f.split('.')[-1] in ['jpg', 'png', 'jpeg']]
+
     for file_ in listing:
         i += 1  
-        im = Image.open(path + file_)
-        im_resized = ImageOps.fit(im, (height, height))
+        im = Image.open(path + '/' + file_)
+        im = remove_transparency(im).convert('RGB')
+        im = ImageOps.fit(im, (height, height))
         filename = directory + file_
-        im_resized.save(filename)
+        im.save(filename)
 
-# resize_centre('to_resize')
+# resize_centre('logos_originals_1700')
+
+
