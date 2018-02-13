@@ -4,9 +4,17 @@ This is a walkthrough for people new to deep learning and GAN to learn about GAN
 
 For the full blogpost, refer to: [https://www.yinglinglow.com/blog/2018/02/13/GAN-walkthrough](https://www.yinglinglow.com/blog/2018/02/13/GAN-walkthrough)
 
-## Goals
+1. [Obtaining Dataset](#obtaining-dataset)
+2. [Cleaning Dataset](#cleaning-dataset)
+3. [Developing Model](#developing-model)
+4. [Results](#results)
+
+## Goal
 
 Generate new brand logos from logos designed by humans
+
+
+
 
 ## Obtaining Dataset
 
@@ -46,6 +54,12 @@ To convert them into png files, use the _convert_svg_png_ function from `1_1_3_s
 
 ## Cleaning Dataset
 
-__Center crop and Resize to 56 x 56__
+__Center crop and resize to 56 x 56__
 
 To center crop and resize them, use the _resize_centre_ function from `1_1_3_split_pics_svg.py`.
+
+## Developing Model
+
+
+## Results
+
