@@ -57,6 +57,7 @@ To run: e.g. resize_centre('/Users/xxx/to_resize')
 
 def resize_centre(path):
     import os
+    from PIL import Image, ImageOps
 
     # check if directory to save resized images into exists, if not create it
     directory = 'resized/'
@@ -64,6 +65,8 @@ def resize_centre(path):
         os.makedirs(directory)
 
     listing = [f for f in os.listdir(path) if not f.startswith('.')]
+    i = 0
+    height = 56
 
     for file_ in listing:
         i += 1  
