@@ -69,6 +69,12 @@ To convert all pictures to one big array and pickle it, use:
 python3 1_6_resize_to_array.py --path=/Users/xxx/resized/ --height=56 --target_path=/Users/xxx/ to_augment=True
 ```
 
+__3) Upload array to S3__
+
+To upload to AWS S3 using AWS CLI, use:
+```bash
+aws s3 cp /Users/xxx/X_train_56_1700.pkl s3://gan-project/
+```
 
 ## Developing Model
 
