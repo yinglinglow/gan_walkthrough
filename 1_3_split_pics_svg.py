@@ -91,3 +91,5 @@ def resize_centre(path):
 # resize_centre('logos_originals_1700')
 
 
+if __name__ == '__main__':
+    main()
