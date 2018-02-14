@@ -6,7 +6,7 @@ It begins from the start_url, scraps the page, checks for a 'next page' link.
 If there is a 'next page' link, it follows the link and scraps the next page.
 This carries on until there is no further 'next page' link.
 
-to run: scrapy runspider myspider.py -o items.csv -t csv
+to run: scrapy runspider 1_1_wikispider.py -o items.csv -t csv
 """
 
 from urllib.parse import urljoin
