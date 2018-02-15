@@ -49,6 +49,7 @@ img_rows = 56
 img_cols = 56
 channels = 3
 picklefile_path = os.environ['XTRAIN']
+bn_axis = -1
 
 # define loss
 def wasserstein_loss(y_true, y_pred):
