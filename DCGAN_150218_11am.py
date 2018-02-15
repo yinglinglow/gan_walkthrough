@@ -313,3 +313,13 @@ if __name__ == '__main__':
     logo_dcgan.train(train_steps=10000, batch_size=256, save_interval=1000) # runs for 10000 epochs, saves every 1000
     logo_dcgan.plot_images(fake=True)
     logo_dcgan.plot_images(fake=False, save2file=True)
+
+    # write files to aws s3 once done
+    import subprocess
+    bashCommand = "aws s3 cp -r dcgan s3://dcgan"
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+
+    bashCommand2 = "aws s3 cp -r dcgan_models s3://dcgan"
+    process2 = subprocess.Popen(bashCommand2.split(), stdout=subprocess.PIPE)
+    output, error = process2.communicate()
