@@ -132,7 +132,7 @@ class DCGAN(object):
 
         # Out: 56 x 56 x 3 channel image [0.0,1.0] per pix
         self.G.add(Conv2DTranspose(self.channel, conv_window, padding='same'))
-        self.G.add(Activation('sigmoid')) # changed back to sigmoid - 0 to 1 range
+        # self.G.add(Activation('sigmoid')) # changed back to sigmoid - 0 to 1 range
         self.G.summary()
         return self.G
     
