@@ -125,6 +125,11 @@ class DCGAN(object):
         self.G.add(BatchNormalization(momentum=0.9))
         self.G.add(Activation('relu'))
 
+        self.G.add(UpSampling2D())
+        self.G.add(Conv2DTranspose(f4, conv_window, padding='same'))
+        self.G.add(BatchNormalization(momentum=0.9))
+        self.G.add(Activation('relu'))
+
         self.G.add(Conv2DTranspose(f8, conv_window, padding='same'))
         self.G.add(BatchNormalization(momentum=0.9))
         self.G.add(Activation('relu'))
