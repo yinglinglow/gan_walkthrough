@@ -61,7 +61,7 @@ class DCGAN(object):
         
         self.D = Sequential()
         depth = 64 # number of filters (for identifying different features in the image), arbitrary
-        conv_window = 4 # height and width of convolution window. decreased from 5 to 4
+        conv_window = 5 # height and width of convolution window. decreased from 5 to 4
         stride = 2 # number of pixels the window slides across
         dropout = 0.4 # amount to dropout to prevent overfitting
         
@@ -103,7 +103,7 @@ class DCGAN(object):
         # values to slowly upscale the image
         # int() truncates decimal points towards zero
 
-        conv_window = 4 # height and width of convolution window. reduce from 5 to 4
+        conv_window = 5 # height and width of convolution window. reduce from 5 to 4
         
         input_dim = 100
         # 100-dimensional noise (uniform distribution between -1.0 to 1.0)
@@ -315,7 +315,7 @@ if __name__ == '__main__':
     logo_dcgan = LOGO_DCGAN()
 
     # start training
-    logo_dcgan.train(train_steps=10000, batch_size=256, save_interval=10) # runs for 10000 epochs, saves every 1000
+    logo_dcgan.train(train_steps=10000, batch_size=256, save_interval=1000) # runs for 10000 epochs, saves every 1000
     logo_dcgan.plot_images(fake=True)
     logo_dcgan.plot_images(fake=False, save2file=True)
 
