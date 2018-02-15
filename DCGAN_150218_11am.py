@@ -316,7 +316,7 @@ if __name__ == '__main__':
     logo_dcgan = LOGO_DCGAN()
 
     # start training
-    logo_dcgan.train(train_steps=10000, batch_size=256, save_interval=1000) # runs for 10000 epochs, saves every 1000
+    logo_dcgan.train(train_steps=10000, batch_size=256, save_interval=10) # runs for 10000 epochs, saves every 1000
     logo_dcgan.plot_images(fake=True)
     logo_dcgan.plot_images(fake=False, save2file=True)
 
