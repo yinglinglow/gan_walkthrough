@@ -67,17 +67,14 @@ class DCGAN(object):
         
         input_shape = (self.img_rows, self.img_cols, self.channel) # shape of input images
         self.D.add(Conv2D(depth*1, conv_window, strides=stride, input_shape=input_shape, padding='same'))
-        self.D.add(BatchNormalization(momentum=0.9)) # added batch normalisation as per DCGAN guidelines
         self.D.add(LeakyReLU(alpha=0.2)) # allows for small gradient when unit is not active
         self.D.add(Dropout(dropout))
 
         self.D.add(Conv2D(depth*2, conv_window, strides=stride, padding='same')) # increase number of filters - arbitrary
-        self.D.add(BatchNormalization(momentum=0.9)) # added batch normalisation
         self.D.add(LeakyReLU(alpha=0.2))
         self.D.add(Dropout(dropout))
 
         self.D.add(Conv2D(depth*4, conv_window, strides=stride, padding='same'))
-        self.D.add(BatchNormalization(momentum=0.9)) # added batch normalisation
         self.D.add(LeakyReLU(alpha=0.2))
         self.D.add(Dropout(dropout))
 
