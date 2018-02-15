@@ -61,7 +61,7 @@ class DCGAN(object):
         
         self.D = Sequential()
         depth = 64 # number of filters (for identifying different features in the image), arbitrary
-        conv_window = 5 # height and width of convolution window. decreased from 5 to 4
+        conv_window = 4 # height and width of convolution window. decreased from 5 to 4
         stride = 2 # number of pixels the window slides across
         dropout = 0.4 # amount to dropout to prevent overfitting
         
@@ -85,7 +85,7 @@ class DCGAN(object):
         # Out: 1-dim probability whether image is real or fake
         self.D.add(Flatten())
         self.D.add(Dense(1)) # output 1 node
-        # self.D.add(Activation('sigmoid'))
+        self.D.add(Activation('sigmoid'))
         self.D.summary()
         return self.D
     
@@ -99,7 +99,7 @@ class DCGAN(object):
         # values to slowly upscale the image
         # int() truncates decimal points towards zero
 
-        conv_window = 5 # height and width of convolution window. reduce from 5 to 4
+        conv_window = 4 # height and width of convolution window. reduce from 5 to 4
         
         input_dim = 100
         # 100-dimensional noise (uniform distribution between -1.0 to 1.0)
@@ -132,7 +132,7 @@ class DCGAN(object):
 
         # Out: 56 x 56 x 3 channel image [0.0,1.0] per pix
         self.G.add(Conv2DTranspose(self.channel, conv_window, padding='same'))
-        # self.G.add(Activation('sigmoid')) # changed back to sigmoid - 0 to 1 range
+        self.G.add(Activation('sigmoid')) # changed back to sigmoid - 0 to 1 range
         self.G.summary()
         return self.G
     
