@@ -79,7 +79,6 @@ class DCGAN(object):
         self.D.add(Dropout(dropout))
 
         self.D.add(Conv2D(depth*8, conv_window, strides=stride, padding='same'))
-        self.D.add(BatchNormalization(momentum=0.9)) # added batch normalisation
         self.D.add(LeakyReLU(alpha=0.2))
         self.D.add(Dropout(dropout))
 
