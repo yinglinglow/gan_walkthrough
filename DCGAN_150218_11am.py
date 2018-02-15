@@ -11,11 +11,11 @@ To run:
 mkdir dcgan
 mkdir dcgan_models
 export XTRAIN=X_train_56_1700.pkl
-export CODE=DCGAN_150218_11am.py
+export CODE=DCGAN_150218_11am
 export DATE=150218
 aws s3 cp s3://gan_project/$XTRAIN .
 tmux
-python3 DCGAN.py
+python3 $CODE.py
 
 """
 
@@ -202,6 +202,7 @@ class LOGO_DCGAN(object):
                 images_fake = self.generator.predict(noise)
 
                 # join them together
+                print(images_train.shape, images_fake.shape)
                 x = np.concatenate((images_train, images_fake))
 
                 # generate labels
