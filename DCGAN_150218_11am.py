@@ -89,7 +89,7 @@ class DCGAN(object):
         # Out: 1-dim probability whether image is real or fake
         self.D.add(Flatten())
         self.D.add(Dense(1)) # output 1 node
-        # self.D.add(Activation('sigmoid'))
+        self.D.add(Activation('sigmoid'))
         self.D.summary()
         return self.D
     
@@ -207,7 +207,6 @@ class LOGO_DCGAN(object):
                 images_fake = self.generator.predict(noise)
 
                 # join them together
-                print(images_train.shape, images_fake.shape)
                 x = np.concatenate((images_train, images_fake))
 
                 # generate labels
@@ -273,8 +272,8 @@ class LOGO_DCGAN(object):
                         # save losses and accuracy locally
                         loss_name = 'loss_' + str(i)
                         acc_name = 'acc_' + str(i)
-                        np.save(np.array(loss_name))
-                        np.save(np.array(acc_name))
+                        np.save(np.asarray(loss_name))
+                        np.save(np.asarray(acc_name))
                         print('saved losses and accuracy locally')
 
             break # otherwise the trained images will generate (rotate, flip) infinitely
