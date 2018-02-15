@@ -86,7 +86,7 @@ class DCGAN(object):
         # Out: 1-dim probability whether image is real or fake
         self.D.add(Flatten())
         self.D.add(Dense(1)) # output 1 node
-        # self.D.add(Activation('sigmoid'))
+        self.D.add(Activation('sigmoid'))
         self.D.summary()
         return self.D
     
