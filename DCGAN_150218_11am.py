@@ -136,7 +136,7 @@ class DCGAN(object):
 
         # Out: 56 x 56 x 3 channel image [0.0,1.0] per pix
         self.G.add(Conv2DTranspose(self.channel, conv_window, padding='same'))
-        self.G.add(Activation('tanh')) # changed from sigmoid to tanh as per DCGAN guidelines
+        self.G.add(Activation('sigmoid')) # changed back to sigmoid - 0 to 1 range
         self.G.summary()
         return self.G
     
@@ -157,7 +157,7 @@ class DCGAN(object):
         self.AM = Sequential()
         self.AM.add(self.generator())
         self.AM.add(self.discriminator()) # generator gives fake images to discriminator (which also receives real images), discriminator classifies.
-        self.AM.compile(loss='mse', optimizer=optimizer,\
+        self.AM.compile(loss='binary_crossentropy', optimizer=optimizer,\
             metrics=['accuracy']) # change loss function to mse because of change to tanh
         return self.AM
 
