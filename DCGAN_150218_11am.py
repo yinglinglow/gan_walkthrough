@@ -310,7 +310,7 @@ if __name__ == '__main__':
     # load X_train data as an array with shape (x, height, width, channel) where x = number of images or batch size
     picklefile_path = os.environ['XTRAIN']
     date = os.environ['DATE']
-    X_train = np.load(picklefile_path)
+    X_train = np.load(picklefile_path).astype(np.float32)/255.0
     
     # instantiate GAN model
     logo_dcgan = LOGO_DCGAN()
