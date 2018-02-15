@@ -97,8 +97,8 @@ class DCGAN(object):
         if self.G:
             return self.G
         self.G = Sequential()
-        dropout = 0.3 # reduce from 0.4 to 0.3
-        depth = 64 * 8 # number of filters, arbitrary
+        dropout = 0.4
+        depth = 64 * 4 # number of filters, arbitrary
         f2, f4, f8 = int(depth/2), int(depth/4), int(depth/8) # number of output filters in the convolution
         # values to slowly upscale the image
         # int() truncates decimal points towards zero
@@ -272,8 +272,8 @@ class LOGO_DCGAN(object):
                         # save losses and accuracy locally
                         loss_name = 'loss_' + str(i)
                         acc_name = 'acc_' + str(i)
-                        np.save(np.asarray(loss_name))
-                        np.save(np.asarray(acc_name))
+                        np.save(loss_name, np.asarray(loss))
+                        np.save(acc_name, np.asarray(acc))
                         print('saved losses and accuracy locally')
 
             break # otherwise the trained images will generate (rotate, flip) infinitely
