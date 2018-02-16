@@ -1,6 +1,6 @@
 """
 From https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py
-to run: python3 WGAN_010218.py --output_dir=wgan
+to run: python3 WGAN_160218_10pm.py --output_dir=wgan_16
 """
 
 # necessary when running on AWS EC2
@@ -250,8 +250,7 @@ for epoch in range(10000):
 
         # print loss messages
         log_mesg = "%d: [D loss: %f, acc: %f]" % (epoch, d_loss[0], d_loss[1])
-        log_mesg_1 = "%s: [A loss: %f]" % (log_mesg, a_loss)
-        print(log_mesg)
+        log_mesg_1 = "%s [A loss: %f]" % (log_mesg, a_loss)
         print(log_mesg_1)
         loss.append([epoch, d_loss[0], d_loss[1]])
 
