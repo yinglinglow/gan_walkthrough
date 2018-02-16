@@ -276,7 +276,7 @@ for epoch in range(10000):
         print(log_mesg)
         print(log_mesg_1)
 
-    if epoch % 10 == 0:
+    if epoch % 1000 == 0:
         # save discriminator model locally
         try:
             filename = 'wgan_models/discr_model_' + str(epoch)
