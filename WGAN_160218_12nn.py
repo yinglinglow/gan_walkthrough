@@ -242,14 +242,14 @@ positive_y = np.ones((BATCH_SIZE, 1), dtype=np.float32)
 negative_y = -positive_y
 dummy_y = np.zeros((BATCH_SIZE, 1), dtype=np.float32)
 
+# to track losses
+discriminator_loss = []
+generator_loss = []
+
 for epoch in range(10000):
     np.random.shuffle(X_train)
     print("Epoch: ", epoch)
     print("Number of batches: ", int(X_train.shape[0] // BATCH_SIZE))
-
-    # to track losses
-    discriminator_loss = []
-    generator_loss = []
 
     # minibatches = train discriminator 5 times before training generator
     minibatches_size = BATCH_SIZE * TRAINING_RATIO
@@ -266,7 +266,6 @@ for epoch in range(10000):
         g_loss = generator_model.train_on_batch(np.random.rand(BATCH_SIZE, 100), positive_y)
         generator_loss.append(g_loss)
     
-
     if epoch % 5 == 0:
         # generate fake images
         generate_images(generator, args.output_dir, epoch)
@@ -298,25 +297,12 @@ for epoch in range(10000):
             print('unable to save adversarial model locally')
             pass
 
-        # save loss plots locally
-        try:
-            filename = 'wgan_models/discriminator_loss_' + str(epoch) + '.pkl'
-            with open(filename, 'wb') as f:
-                pickle.dump(discriminator_loss, f)
-            print('saving discr loss locally')
-        except:
-            print('unable to save discriminator loss locally')
-            pass
-
-        # save accuracy plots locally
-        try:
-            filename = 'wgan_models/generator_loss_' + str(epoch) + '.pkl'
-            with open(filename, 'wb') as f:
-                pickle.dump(generator_loss, f)
-            print('saving generator loss locally')
-        except:
-            print('unable to save generator loss locally')
-            pass
+        # save discriminator and generator losses locally
+        disc_name = 'discr_loss_' + str(i)
+        gen_name = 'gen_loss_' + str(i)
+        np.save(disc_name, np.asarray(discriminator_loss))
+        np.save(gen_name, np.asarray(generator_loss))
+        print('saved losses and accuracy locally')
 
 bashCommand = "aws s3 cp -r wgan s3://gan-project"
 import subprocess
