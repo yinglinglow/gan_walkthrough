@@ -71,13 +71,13 @@ def make_generator():
 
     # 128 is the number of filters - slowly decrease
     depth = 128
-    f, f2 = depth, depth/2
+    f, f2 = depth, int(depth/2)
 
     # 7 is the starting dimension. 7 * 8 = 56
     # (8 = 2**3, where 3 is the number of conv2dtranspose layers)
     dim = 7
 
-    conv_window = 5 # height and width of convolution window.
+    conv_window = 4 # height and width of convolution window, reduced from 5 to 4
     stride = 2
     channels = 3
 
@@ -115,7 +115,7 @@ def make_discriminator():
     representing whether the input is real or generated. """
 
     depth = 64 # arbitrary number of filters
-    conv_window = 5
+    conv_window = 4 # reduced to 4
     stride = 2
     channels = 3
     model = Sequential()
