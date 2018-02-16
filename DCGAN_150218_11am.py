@@ -61,7 +61,7 @@ class DCGAN(object):
         
         self.D = Sequential()
         depth = 64 # number of filters (for identifying different features in the image), arbitrary
-        conv_window = 4 # height and width of convolution window. decreased from 5 to 4
+        conv_window = 6 # height and width of convolution window. decreased from 5 to 4
         stride = 2 # number of pixels the window slides across
         dropout = 0.4 # amount to dropout to prevent overfitting
         
@@ -99,7 +99,7 @@ class DCGAN(object):
         # values to slowly upscale the image
         # int() truncates decimal points towards zero
 
-        conv_window = 4 # height and width of convolution window. reduce from 5 to 4
+        conv_window = 6 # height and width of convolution window. reduce from 5 to 4
         
         input_dim = 100
         # 100-dimensional noise (uniform distribution between -1.0 to 1.0)
@@ -192,6 +192,11 @@ class LOGO_DCGAN(object):
         # generate randomly rotated/flipped images from original training images
         datagen = ImageDataGenerator(rotation_range=20, horizontal_flip=True)
         datagen.fit(X_train)
+
+        # generate lists for loss and accuracy
+        loss = []
+        acc = []
+
         for img_batch in datagen.flow(X_train, batch_size=batch_size):
             for i in range(train_steps):
                 
@@ -222,11 +227,8 @@ class LOGO_DCGAN(object):
                 log_mesg = "%s  [A loss: %f, acc: %f]" % (log_mesg, a_loss[0], a_loss[1])
                 print(log_mesg)
 
-                # generate lists for loss and accuracy
-                loss = []
+                # append loss and acc
                 loss.append(list((i, d_loss[0], a_loss[0])))
-
-                acc = []
                 acc.append(list((i, d_loss[1], a_loss[1])))
 
                 if save_interval>0:
