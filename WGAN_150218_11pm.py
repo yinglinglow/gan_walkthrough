@@ -73,7 +73,7 @@ def make_generator():
     model.add(Dense(128 * 7 * 7))
     model.add(BatchNormalization())
     model.add(LeakyReLU())
-
+    
     model.add(Reshape((7, 7, 128), input_shape=(128 * 7 * 7,)))
 
     model.add(Conv2DTranspose(128, (5, 5), strides=2, padding='same'))
