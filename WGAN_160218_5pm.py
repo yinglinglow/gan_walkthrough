@@ -41,7 +41,7 @@ import numpy as np
 from PIL import Image
 import pickle
 
-BATCH_SIZE = 64
+BATCH_SIZE = 64 # the number of images used in each training
 TRAINING_RATIO = 5  # The training ratio is the number of discriminator updates per generator update. The paper uses 5.
 GRADIENT_PENALTY_WEIGHT = 10  # As per the paper
 
