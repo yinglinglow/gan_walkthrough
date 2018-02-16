@@ -272,7 +272,7 @@ for epoch in range(10000):
 
         # print loss messages
         log_mesg = "%d: [D loss: %f, acc: %f]" % (epoch, d_loss[0], d_loss[1])
-        log_mesg_1 = "%s: [A loss: %f, acc: %f]" % (log_mesg, g_loss)
+        log_mesg_1 = "%s: [A loss: %f]" % (log_mesg, g_loss)
         print(log_mesg)
         print(log_mesg_1)
 
