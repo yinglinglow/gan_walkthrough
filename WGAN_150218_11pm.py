@@ -64,7 +64,7 @@ def gradient_penalty_loss(y_true, y_pred, averaged_samples, gradient_penalty_wei
 # make generator
 def make_generator():
     """Creates a generator model that takes a 100-dimensional noise vector as a "seed", 
-    and outputs images of size 56x56x1."""
+    and outputs images of size 56x56x3."""
     model = Sequential()
 
     model.add(Dense(1024, input_dim=100))
