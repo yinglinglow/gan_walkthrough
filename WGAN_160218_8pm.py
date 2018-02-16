@@ -266,13 +266,13 @@ for epoch in range(10000):
         g_loss = generator_model.train_on_batch(np.random.rand(BATCH_SIZE, 100), positive_y)
         generator_loss.append(g_loss)
     
-    if epoch % 5 == 0:
+    if epoch % 500 == 0:
         # generate fake images
         generate_images(generator, args.output_dir, epoch)
 
         # print loss messages
         log_mesg = "%d: [D loss: %f, acc: %f]" % (epoch, d_loss[0], d_loss[1])
-        log_mesg_1 = "%s: [A loss: %f, acc: %f]" % (log_mesg, g_loss, g_loss)
+        log_mesg_1 = "%s: [A loss: %f, acc: %f]" % (log_mesg, g_loss)
         print(log_mesg)
         print(log_mesg_1)
 
