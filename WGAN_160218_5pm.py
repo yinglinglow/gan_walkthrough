@@ -11,7 +11,7 @@ To run:
 mkdir wgan
 mkdir wgan_models
 export XTRAIN=X_train_56_1700.pkl
-export CODE=WGAN_160218_12nn
+export CODE=WGAN_160218_5pm
 export DATE=160218
 aws s3 cp s3://gan_project/$XTRAIN .
 tmux
