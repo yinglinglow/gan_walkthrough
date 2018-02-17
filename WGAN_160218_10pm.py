@@ -281,22 +281,22 @@ for epoch in range(10000):
             np.save(loss_name, np.asarray(loss))
             print('saved losses locally')
 
-            # plot losses
-            epoch = []
-            discr = []
-            adv = []
-            for loss_epoch in loss:
-                epoch.append(loss_epoch[0])
-                discr.append(loss_epoch[1])
-                adv.append(loss_epoch[2])
-                
-            df = pd.DataFrame([epoch, discr, adv]).transpose()
+        # plot losses
+        epoch = []
+        discr = []
+        adv = []
+        for loss_epoch in loss:
+            epoch.append(loss_epoch[0])
+            discr.append(loss_epoch[1])
+            adv.append(loss_epoch[2])
+            
+        df = pd.DataFrame([epoch, discr, adv]).transpose()
 
-            df.plot(x=0, y=1, figsize=(15,8), ylim=(0,5))
-            plt.savefig('discriminator_' + loss_name)
+        df.plot(x=0, y=1, figsize=(15,8), ylim=(0,5))
+        plt.savefig('discriminator_' + loss_name)
 
-            df.plot(x=0, y=2, figsize=(15,8), ylim=(0,5))
-            plt.savefig('adversarial_' + loss_name)
+        df.plot(x=0, y=2, figsize=(15,8), ylim=(0,5))
+        plt.savefig('adversarial_' + loss_name)
 
 bashCommand = "aws s3 cp -r wgan s3://gan-project"
 import subprocess
