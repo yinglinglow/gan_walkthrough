@@ -244,7 +244,7 @@ for epoch in range(10000):
         break
 
 
-    if epoch % 500 == 0:
+    if epoch % 5 == 0:
         # generate images
         generate_images(generator, args.output_dir, epoch)
 
@@ -255,7 +255,7 @@ for epoch in range(10000):
         loss.append([epoch, d_loss[0], d_loss[1]])
 
 
-    if epoch % 1000 == 0:
+    if epoch % 10 == 0:
         # save discriminator model locally
         try:
             filename = 'wgan_models/discr_model_' + str(epoch)
@@ -276,10 +276,10 @@ for epoch in range(10000):
             print('unable to save adversarial model locally')
             pass
 
-            # save losses locally
-            loss_name = 'loss_' + str(i)
-            np.save(loss_name, np.asarray(loss))
-            print('saved losses locally')
+        # save losses locally
+        loss_name = 'loss_' + str(i)
+        np.save(loss_name, np.asarray(loss))
+        print('saved losses locally')
 
         # plot losses
         epoch = []
