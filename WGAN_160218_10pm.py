@@ -151,7 +151,7 @@ args = parser.parse_args()
 # First we load the image data, reshape it and normalize it to the range [-1, 1]
 
 # load X_train data as an array with shape (x, height, width, channel) where x = number of images or batch size
-X_train = np.load(picklefile_path) * 255.0 # as it was pre-processed
+X_train = np.load(picklefile_path) # as it was pre-processed
 
 X_train = (X_train.astype(np.float32) - 127.5) / 127.5
 
