@@ -1,29 +1,6 @@
 """
-Base code from:
-https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py
-
-Optimisation done for:
-56 x 56 RGB images
-
-Import pre-processed image array saved in S3 bucket
-
-To run:
-mkdir wgan
-mkdir wgan_models
-export XTRAIN=X_train_56_1700.pkl
-export CODE=WGAN_160218_8pm
-export DATE=160218
-aws s3 cp s3://gan_project/$XTRAIN .
-tmux
-python3 $CODE.py --output_dir=wgan
-
+From https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py
 """
-
-# necessary when running on AWS EC2
-import matplotlib
-matplotlib.use('Agg')
-
-# import requirements
 import argparse
 import os
 from keras import backend as K
@@ -34,23 +11,15 @@ from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import Convolution2D, Conv2DTranspose
 from keras.layers.merge import _Merge
 from keras.optimizers import Adam
-from keras.preprocessing.image import ImageDataGenerator
 from functools import partial
-import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 import pickle
 
-BATCH_SIZE = 64 # the number of images used in each training
+BATCH_SIZE = 64
 TRAINING_RATIO = 5  # The training ratio is the number of discriminator updates per generator update. The paper uses 5.
 GRADIENT_PENALTY_WEIGHT = 10  # As per the paper
 
-img_rows = 56
-img_cols = 56
-channels = 3
-picklefile_path = os.environ['XTRAIN']
-
-# define loss
 def wasserstein_loss(y_true, y_pred):
     return K.mean(y_true * y_pred)
 
@@ -60,53 +29,40 @@ def gradient_penalty_loss(y_true, y_pred, averaged_samples, gradient_penalty_wei
     gradient_penalty = gradient_penalty_weight * K.square(1 - gradient_l2_norm)
     return gradient_penalty
 
-# make generator
 def make_generator():
-    """Creates a generator model that takes a 100-dimensional noise vector as a "seed", 
-    and outputs images of size 56x56x3."""
+    """Creates a generator model that takes a 100-dimensional noise vector as a "seed", and outputs images
+    of size 28x28x1."""
     model = Sequential()
 
     model.add(Dense(1024, input_dim=100))
     model.add(LeakyReLU())
 
-    # 128 is the number of filters - slowly decrease
-    depth = 128
-    f, f2 = depth, int(depth/2)
-
-    # 7 is the starting dimension. 7 * 8 = 56
-    # (8 = 2**3, where 3 is the number of conv2dtranspose layers)
-    dim = 7
-
-    conv_window = 4 # height and width of convolution window, reduced from 5 to 4
-    stride = 2
-    channels = 3
-
-    model.add(Dense(depth * dim * dim)) 
+    model.add(Dense(128 * 7 * 7))
     model.add(BatchNormalization())
     model.add(LeakyReLU())
+    if K.image_data_format() == 'channels_first':
+        model.add(Reshape((128, 7, 7), input_shape=(128 * 7 * 7,)))
+        bn_axis = 1 # define the axis to be normalised, usually the features axis
+    else:
+        model.add(Reshape((7, 7, 128), input_shape=(128 * 7 * 7,)))
+        bn_axis = -1
 
-    model.add(Reshape((dim, dim, f), input_shape=(f * dim * dim,)))
-
-    model.add(Conv2DTranspose(f, conv_window, strides=stride, padding='same'))
-    model.add(BatchNormalization())
+    model.add(Conv2DTranspose(128, (5, 5), strides=2, padding='same'))
+    model.add(BatchNormalization(axis=bn_axis))
     model.add(LeakyReLU())
 
-    model.add(Convolution2D(f2, conv_window, padding='same'))
-    model.add(BatchNormalization())
+    model.add(Convolution2D(64, (5, 5), padding='same'))
+    model.add(BatchNormalization(axis=bn_axis))
     model.add(LeakyReLU())
 
-    model.add(Conv2DTranspose(f2, conv_window, strides=stride, padding='same'))
-    model.add(BatchNormalization())
+    model.add(Conv2DTranspose(64, (5, 5), strides=2, padding='same'))
+    model.add(BatchNormalization(axis=bn_axis))
     model.add(LeakyReLU())
-
-    model.add(Conv2DTranspose(f2, conv_window, strides=stride, padding='same'))
-    model.add(BatchNormalization())
-    model.add(LeakyReLU())
-
-    # because we normalized training inputs to lie in the range [-1, 1] by minusing and dividng by 127.5,
+    # Because we normalized training inputs to lie in the range [-1, 1],
     # the tanh function should be used for the output of the generator to ensure its output
     # also lies in this range.
-    model.add(Convolution2D(channels, conv_window, padding='same', activation='tanh'))
+
+    model.add(Convolution2D(3, (5, 5), padding='same', activation='tanh'))
     return model
 
 
@@ -114,25 +70,24 @@ def make_discriminator():
     """Creates a discriminator model that takes an image as input and outputs a single value, 
     representing whether the input is real or generated. """
 
-    depth = 64 # arbitrary number of filters
-    conv_window = 4 # reduced to 4
-    stride = 2
-    channels = 3
     model = Sequential()
 
-    model.add(Convolution2D(depth, conv_window, padding='same', input_shape=(img_rows, img_rows, channels)))
+    if K.image_data_format() == 'channels_first':
+        model.add(Convolution2D(64, (5, 5), padding='same', input_shape=(3, 28, 28)))
+    else:
+        model.add(Convolution2D(64, (5, 5), padding='same', input_shape=(28, 28, 3)))
     model.add(LeakyReLU())
 
-    model.add(Convolution2D(depth*2, conv_window, kernel_initializer='he_normal', strides=stride)) 
+    model.add(Convolution2D(128, (5, 5), kernel_initializer='he_normal', strides=[2, 2])) 
     model.add(LeakyReLU())
 
-    model.add(Convolution2D(depth*2, conv_window, kernel_initializer='he_normal', padding='same', strides=stride))
+    model.add(Convolution2D(128, (5, 5), kernel_initializer='he_normal', padding='same', strides=[2, 2]))
     model.add(LeakyReLU())
     model.add(Flatten())
 
-    model.add(Dense(depth*16, kernel_initializer='he_normal'))
+    model.add(Dense(1024, kernel_initializer='he_normal'))
     model.add(LeakyReLU())
-    model.add(Dense(channels, kernel_initializer='he_normal'))
+    model.add(Dense(3, kernel_initializer='he_normal'))
     return model
 
 def tile_images(image_stack):
@@ -143,6 +98,7 @@ def tile_images(image_stack):
     return tiled_images
 
 class RandomWeightedAverage(_Merge):
+
     def _merge_function(self, inputs):
         weights = K.random_uniform((BATCH_SIZE, 1, 1, 1))
         return (weights * inputs[0]) + ((1 - weights) * inputs[1])
@@ -153,32 +109,20 @@ def generate_images(generator_model, output_dir, epoch):
     test_image_stack = (test_image_stack * 127.5) + 127.5
     test_image_stack = np.squeeze(np.round(test_image_stack).astype(np.uint8))
     tiled_output = tile_images(test_image_stack)
-    tiled_output = Image.fromarray(tiled_output)
+    tiled_output = Image.fromarray(tiled_output)  # L specifies greyscale
     outfile = os.path.join(output_dir, 'epoch_{}.png'.format(epoch))
     tiled_output.save(outfile)
-
-    plt.figure(figsize=(20,20))
-    filename = "wgan/logo_%d.png" % epoch
-    for i in range(test_image_stack.shape[0]):
-        plt.subplot(4, 4, i+1)
-        image = test_image_stack[i, :, :, :]
-        image = np.reshape(image, [img_rows, img_cols, channels])
-        plt.imshow(image)
-        plt.axis('off')
-    plt.tight_layout()
-    plt.savefig(filename)
-    plt.close('all')
-
 
 parser = argparse.ArgumentParser(description="Improved Wasserstein GAN implementation for Keras.")
 parser.add_argument("--output_dir", "-o", required=True, help="Directory to output generated files to")
 args = parser.parse_args()
 
+# First we load the image data, reshape it and normalize it to the range [-1, 1]
 
 # load X_train data as an array with shape (x, height, width, channel) where x = number of images or batch size
-X_train = np.load(picklefile_path)
+picklefile_path = 'X_train_28_1503'
+X_train = np.load(picklefile_path) * 255.0 # as it was pre-processed
 
-# normalize it to the range [-1, 1]
 X_train = (X_train.astype(np.float32) - 127.5) / 127.5
 
 # Now we initialize the generator and discriminator.
@@ -237,49 +181,32 @@ discriminator_model.compile(optimizer=Adam(0.0001, beta_1=0.5, beta_2=0.9),
                                   wasserstein_loss,
                                   partial_gp_loss])
 
-# labelling data
 positive_y = np.ones((BATCH_SIZE, 1), dtype=np.float32)
 negative_y = -positive_y
 dummy_y = np.zeros((BATCH_SIZE, 1), dtype=np.float32)
-
-# to track losses
-discriminator_loss = []
-generator_loss = []
 
 for epoch in range(10000):
     np.random.shuffle(X_train)
     print("Epoch: ", epoch)
     print("Number of batches: ", int(X_train.shape[0] // BATCH_SIZE))
-
-    # minibatches = train discriminator 5 times before training generator
+    discriminator_loss = []
+    generator_loss = []
     minibatches_size = BATCH_SIZE * TRAINING_RATIO
     for i in range(int(X_train.shape[0] // (BATCH_SIZE * TRAINING_RATIO))):
-        # prepare X_train set in the minibatch size
         discriminator_minibatches = X_train[i * minibatches_size:(i + 1) * minibatches_size]
         for j in range(TRAINING_RATIO):
-            # for each mini training (out of 5), train discriminator on noise and training set
             image_batch = discriminator_minibatches[j * BATCH_SIZE:(j + 1) * BATCH_SIZE]
             noise = np.random.rand(BATCH_SIZE, 100).astype(np.float32)
-            d_loss = discriminator_model.train_on_batch([image_batch, noise], [positive_y, negative_y, dummy_y])
-            discriminator_loss.append(d_loss)
-        # after mini training, train the generator once, on random inputs
-        g_loss = generator_model.train_on_batch(np.random.rand(BATCH_SIZE, 100), positive_y)
-        generator_loss.append(g_loss)
-    
+            discriminator_loss.append(discriminator_model.train_on_batch([image_batch, noise],
+                                                                         [positive_y, negative_y, dummy_y]))
+        generator_loss.append(generator_model.train_on_batch(np.random.rand(BATCH_SIZE, 100), positive_y))
+    # Still needs some code to display losses from the generator and discriminator, progress bars, etc.
     if epoch % 500 == 0:
-        # generate fake images
         generate_images(generator, args.output_dir, epoch)
 
-        # print loss messages
-        log_mesg = "%d: [D loss: %f, acc: %f]" % (epoch, d_loss[0], d_loss[1])
-        log_mesg_1 = "%s: [A loss: %f]" % (log_mesg, g_loss)
-        print(log_mesg)
-        print(log_mesg_1)
-
-    if epoch % 1000 == 0:
         # save discriminator model locally
         try:
-            filename = 'wgan_models/discr_model_' + str(epoch)
+            filename = 'discr_model_' + str(epoch)
             discr_model = discriminator_model
             print('saving discriminator model locally')
             discr_model.save(filename)
@@ -289,7 +216,7 @@ for epoch in range(10000):
 
         # save adversarial model locally
         try:
-            filename = 'wgan_models/adv_model_' + str(epoch)
+            filename = 'adv_model_' + str(epoch)
             adv_model = generator_model
             print('saving adversarial model locally')
             adv_model.save(filename)
@@ -297,18 +224,22 @@ for epoch in range(10000):
             print('unable to save adversarial model locally')
             pass
 
-        # save discriminator and generator losses locally
-        disc_name = 'discr_loss_' + str(i)
-        gen_name = 'gen_loss_' + str(i)
-        np.save(disc_name, np.asarray(discriminator_loss))
-        np.save(gen_name, np.asarray(generator_loss))
-        print('saved losses and accuracy locally')
+        # save loss plots locally
+        try:
+            filename = 'discriminator_loss_' + str(epoch) + '.pkl'
+            with open(filename, 'wb') as f:
+                pickle.dump(discriminator_loss, f)
+            print('saving discr loss locally')
+        except:
+            print('unable to save discriminator loss locally')
+            pass
 
-bashCommand = "aws s3 cp -r wgan s3://gan-project"
-import subprocess
-process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-output, error = process.communicate()
-
-bashCommand2 = "aws s3 cp -r wgan_models s3://gan-project"
-process2 = subprocess.Popen(bashCommand2.split(), stdout=subprocess.PIPE)
-output, error = process2.communicate()
+        # save accuracy plots locally
+        try:
+            filename = 'generator_loss_' + str(epoch) + '.pkl'
+            with open(filename, 'wb') as f:
+                pickle.dump(generator_loss, f)
+            print('saving generator loss locally')
+        except:
+            print('unable to save generator loss locally')
+            pass
