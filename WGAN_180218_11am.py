@@ -3,7 +3,12 @@ Exactly as per WGAN_010218.py (still multiples by 255.0 since using old array) e
 saves losses
 
 From https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py
-to run: python3 WGAN_160218_10pm.py --output_dir=wgan_16
+to run: 
+
+export XTRAIN=X_train_56_1503
+export CODE=WGAN_180218_11am
+export DATE=180218
+python3 $XTRAIN.py --output_dir=gan
 """
 
 # necessary when running on AWS EC2
