@@ -11,9 +11,12 @@ cd gan_walkthrough
 mkdir gan
 mkdir gan_models
 
+# open tmux
+tmux
+
 # change your variables accordingly if necessary
 export XTRAIN=X_train_56_1700.pkl
-export CODE=DCGAN_160218_final
+export CODE=WGAN_180218_11am
 export DATE=180218
 
 # if you uploaded your training file onto AWS S3, import it now, else skip this chunk
@@ -22,8 +25,7 @@ export DATE=180218
 # export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxx
 # aws s3 cp s3://gan-project/$XTRAIN .
 
-# open tmux, and run the model
-tmux
+# run the model
 python3 $CODE.py --output_dir=gan
 
 
