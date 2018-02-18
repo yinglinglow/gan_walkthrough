@@ -38,6 +38,6 @@ aws s3 cp -r gan_models/ s3://yourbucketname/
 To save files from instance to local:
 
 AWS: scp -i yourpemfile.pem -r ubuntu@ec2-xx-xxx-xxx-xxx.us-west-2.compute.amazonaws.com:~/gan_walkthrough/gan .
-GCP: gcloud compute scp instance-1:gan_walkthrough/gan/ .
+GCP: gcloud compute scp instance-1:gan_walkthrough/gan/* .
 
 """

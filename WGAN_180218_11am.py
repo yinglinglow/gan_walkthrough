@@ -285,7 +285,7 @@ for epoch in range(10000):
             pass
 
         # save losses locally
-        loss_name = 'loss_' + str(i)
+        loss_name = 'loss_' + str(epoch)
         np.save(loss_name, np.asarray(loss))
         print('saved losses locally')
 
@@ -300,10 +300,10 @@ for epoch in range(10000):
             
         df = pd.DataFrame([epoch, discr, adv]).transpose()
 
-        df.plot(x=0, y=1, figsize=(15,8), ylim=(0,5))
+        df.plot(x=0, y=1, figsize=(15,8))
         plt.savefig('discriminator_' + loss_name)
 
-        df.plot(x=0, y=2, figsize=(15,8), ylim=(0,5))
+        df.plot(x=0, y=2, figsize=(15,8))
         plt.savefig('adversarial_' + loss_name)
 
 bashCommand = "aws s3 cp -r gan s3://gan-project"
