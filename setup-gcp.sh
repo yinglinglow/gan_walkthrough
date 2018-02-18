@@ -50,6 +50,6 @@ sudo cp cuda/lib64/*.* /usr/local/cuda/lib64/
 jupyter nbextension enable --py widgetsnbextension --sys-prefix
 sudo apt-get install python-dev python-pip libcupti-dev -y
 conda install -c anaconda tensorflow-gpu -y
-conda install -c anaconda keras-gpu -y
-conda install -c conda-forge awscli 
+conda install -c anaconda keras-gpu
+conda install -c conda-forge awscli
 sudo reboot
