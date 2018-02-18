@@ -8,7 +8,7 @@ to run:
 export XTRAIN=X_train_56_1503
 export CODE=WGAN_180218_11am
 export DATE=180218
-python3 $XTRAIN.py --output_dir=gan
+python3 $CODE.py --output_dir=gan
 """
 
 # necessary when running on AWS EC2
@@ -140,7 +140,7 @@ def generate_images(generator_model, output_dir, epoch):
     tiled_output.save(outfile)
 
     plt.figure(figsize=(20,20))
-    filename = "wgan/logo_%d.png" % epoch
+    filename = "gan/logo_%d.png" % epoch
     for i in range(test_image_stack.shape[0]):
         plt.subplot(4, 4, i+1)
         image = test_image_stack[i, :, :, :]
@@ -266,7 +266,7 @@ for epoch in range(10000):
     if epoch % 10 == 0:
         # save discriminator model locally
         try:
-            filename = 'wgan_models/discr_model_' + str(epoch)
+            filename = 'gan_models/discr_model_' + str(epoch)
             discr_model = discriminator_model
             print('saving discriminator model locally')
             discr_model.save(filename)
@@ -276,7 +276,7 @@ for epoch in range(10000):
 
         # save adversarial model locally
         try:
-            filename = 'wgan_models/adv_model_' + str(epoch)
+            filename = 'gan_models/adv_model_' + str(epoch)
             adv_model = generator_model
             print('saving adversarial model locally')
             adv_model.save(filename)
@@ -306,11 +306,11 @@ for epoch in range(10000):
         df.plot(x=0, y=2, figsize=(15,8), ylim=(0,5))
         plt.savefig('adversarial_' + loss_name)
 
-bashCommand = "aws s3 cp -r wgan s3://gan-project"
+bashCommand = "aws s3 cp -r gan s3://gan-project"
 import subprocess
 process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 output, error = process.communicate()
 
-bashCommand2 = "aws s3 cp -r wgan_models s3://gan-project"
+bashCommand2 = "aws s3 cp -r gan_models s3://gan-project"
 process2 = subprocess.Popen(bashCommand2.split(), stdout=subprocess.PIPE)
 output, error = process2.communicate()
