@@ -24,7 +24,7 @@ export DATE=180218
 
 # open tmux, and run the model
 tmux
-python3 $CODE.py --output_dir=wgan
+python3 $CODE.py --output_dir=gan
 
 
 """
