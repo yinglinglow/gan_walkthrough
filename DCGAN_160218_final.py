@@ -13,7 +13,7 @@ mkdir gan_models
 export XTRAIN=X_train_56_1700.pkl
 export CODE=DCGAN_150218_11am
 export DATE=150218
-aws s3 cp s3://gan_project/$XTRAIN .
+aws s3 cp s3://gan_walkthrough/$XTRAIN .
 tmux
 python3 $CODE.py
 
@@ -164,25 +164,23 @@ class LOGO_DCGAN(object):
         self.channel = 3
         self.x_train = X_train
 
-        self.DCGAN = DCGAN()
-        
         # try to load, else create new models
         try:
-            self.D = load_model('~/gan_project/discr_model_6999')
-            self.G = load_model('~/gan_project/discr_model_6999')
-            self.AM = load_model('~/gan_project/adv_model_6999')
-            self.DM = load_model('~/gan_project/discr_model_6999')
+            self.DCGAN = DCGAN()
+            self.discriminator = load_model('~/gan_walkthrough/discr_model_6999_180218')
+            self.adversarial = load_model('~/gan_walkthrough/adv_model_6999_180218')
+            self.generator = load_model('~/gan_walkthrough/gen_6999_180218')
             print('loaded models')
         except:
+            self.DCGAN = DCGAN()
             self.D = None
             self.G = None 
             self.AM = None  
             self.DM = None
+            self.discriminator =  self.DCGAN.discriminator_model()
+            self.adversarial = self.DCGAN.adversarial_model()
+            self.generator = self.DCGAN.generator()
             print('created new models')
-
-        self.generator = self.DCGAN.generator()
-        self.discriminator = self.DCGAN.discriminator_model()
-        self.adversarial = self.DCGAN.adversarial_model()
         
     def train(self, train_steps=2000, batch_size=256, save_interval=0):
         noise_input = None
