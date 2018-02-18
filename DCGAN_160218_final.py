@@ -8,8 +8,8 @@ Optimisation done for:
 Import pre-processed image array saved in S3 bucket
 
 To run:
-mkdir dcgan
-mkdir dcgan_models
+mkdir gan
+mkdir gan_models
 export XTRAIN=X_train_56_1700.pkl
 export CODE=DCGAN_150218_11am
 export DATE=150218
@@ -239,7 +239,7 @@ class LOGO_DCGAN(object):
                         
                         # save discriminator model locally
                         try:
-                            filename = 'dcgan_models/discr_model_' + str(i) + date
+                            filename = 'gan_models/discr_model_%d_%s' % (i, date)
                             discr_model = self.discriminator
                             print('saving discriminator model locally')
                             discr_model.save(filename)
@@ -249,7 +249,7 @@ class LOGO_DCGAN(object):
 
                         # save adversarial model locally
                         try:
-                            filename = 'dcgan_models/adv_model_' + str(i) + date
+                            filename = 'gan_models/adv_model_%d_%s' % (i, date)
                             adv_model = self.adversarial
                             print('saving adversarial model locally')
                             adv_model.save(filename)
@@ -259,7 +259,7 @@ class LOGO_DCGAN(object):
 
                         # save generator locally
                         try:
-                            filename = 'dcgan_models/gen_' + str(i) + date
+                            filename = 'gan_models/gen_%d_%s' % (i, date)
                             gen = self.generator
                             print('saving generator locally')
                             gen.save(filename)
@@ -268,8 +268,8 @@ class LOGO_DCGAN(object):
                             pass
                         
                         # save losses and accuracy locally
-                        loss_name = 'loss_' + str(i)
-                        acc_name = 'acc_' + str(i)
+                        loss_name = "gan/loss_%d" % i
+                        acc_name = "gan/acc_%d" % i
                         np.save(loss_name, np.asarray(loss))
                         np.save(acc_name, np.asarray(acc))
                         print('saved losses and accuracy locally')
@@ -286,20 +286,20 @@ class LOGO_DCGAN(object):
                         df = pd.DataFrame([epoch, discr, adv]).transpose()
 
                         df.plot(x=0, y=1, figsize=(15,8), ylim=(0,5))
-                        plt.savefig('discriminator_' + loss_name)
+                        plt.savefig('discriminator_%s' % loss_name)
 
                         df.plot(x=0, y=2, figsize=(15,8), ylim=(0,5))
-                        plt.savefig('adversarial_' + loss_name)
+                        plt.savefig('adversarial_%s' % loss_name)
 
             break # otherwise the trained images will generate (rotate, flip) infinitely
 
     def plot_images(self, save2file=False, fake=True, samples=16, noise=None, step=0):
-        filename = 'dcgan/logo.png'
+        filename = 'gan/logo.png'
         if fake: # return fake images
             if noise is None: # no training done
                 noise = np.random.uniform(-1.0, 1.0, size=[samples, 100])
             else:
-                filename = "dcgan/logo_%d.png" % step
+                filename = "gan/logo_%d.png" % step
             images = self.generator.predict(noise)
         else: # return the training images
             i = np.random.randint(0, self.x_train.shape[0], samples)
@@ -335,11 +335,11 @@ if __name__ == '__main__':
     logo_dcgan.plot_images(fake=False, save2file=True)
 
     # write files to aws s3 once done
-    import subprocess
-    bashCommand = "aws s3 cp -r dcgan s3://dcgan"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
+    # import subprocess
+    # bashCommand = "aws s3 cp -r gan s3://gan"
+    # process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    # output, error = process.communicate()
 
-    bashCommand2 = "aws s3 cp -r dcgan_models s3://dcgan"
-    process2 = subprocess.Popen(bashCommand2.split(), stdout=subprocess.PIPE)
-    output, error = process2.communicate()
+    # bashCommand2 = "aws s3 cp -r gan_models s3://gan"
+    # process2 = subprocess.Popen(bashCommand2.split(), stdout=subprocess.PIPE)
+    # output, error = process2.communicate()
