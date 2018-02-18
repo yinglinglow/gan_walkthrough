@@ -252,7 +252,7 @@ for epoch in range(10000):
         break
 
 
-    if epoch % 5 == 0:
+    if epoch % 500 == 0:
         # generate images
         generate_images(generator, args.output_dir, epoch)
 
@@ -263,7 +263,7 @@ for epoch in range(10000):
         loss.append([epoch, d_loss[0], d_loss[1]])
 
 
-    if epoch % 10 == 0:
+    if epoch % 1000 == 0:
         # save discriminator model locally
         try:
             filename = 'gan_models/discr_model_' + str(epoch)
