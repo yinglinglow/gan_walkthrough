@@ -117,15 +117,16 @@ python3 $CODE.py
 
 __1) DCGAN__
 
+<br><br>
 Epoch: 3000
 
 <img src='https://user-images.githubusercontent.com/21985915/36361986-a2bd0bac-156b-11e8-9d07-fb39dc348440.png' width=200>
 
-
-
+<br><br>
 
 __2) WGAN-GP__
 
+<br><br>
 Epoch: 2000
 
 <img src='https://user-images.githubusercontent.com/21985915/36361988-a320d7e0-156b-11e8-961f-13719a3c1088.png' width=200>
