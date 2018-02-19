@@ -5,16 +5,15 @@ https://github.com/roatienza/Deep-Learning-Experiments/blob/master/Experiments/T
 Optimisation done for:
 56 x 56 RGB images
 
-Import pre-processed image array saved in S3 bucket
+Import pre-processed image array saved locally
 
 To run:
 mkdir gan
 mkdir gan_models
-export XTRAIN=X_train_56_1700.pkl
-export CODE=DCGAN_150218_11am
-export DATE=150218
-aws s3 cp s3://gan_walkthrough/$XTRAIN .
 tmux
+export XTRAIN=X_train_56_1700.pkl
+export CODE=DCGAN_160218_final
+export DATE=160218
 python3 $CODE.py
 
 """
