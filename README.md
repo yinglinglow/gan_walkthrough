@@ -30,7 +30,7 @@ To download all the images, use:
 python3 1_2_downloading_wiki_pics.py --filename=items.csv --local=True
 ```
 
-![Wiki_logos](https://user-images.githubusercontent.com/21985915/36363186-dd9d4e80-1575-11e8-98d5-aa797107ee4c.png =821x470)
+<img src='https://user-images.githubusercontent.com/21985915/36363186-dd9d4e80-1575-11e8-98d5-aa797107ee4c.png' width=821 height=470>
 
 __2) Scrape 2,000 logos scraped from Google Images__
 
@@ -43,7 +43,7 @@ python3 1_3_split_pic.py --filename=abc.jpeg --col=3 --row=2
 
 Alternatively, you can simply download the folder of pictures I used, from `logos_originals_1700.zip`.
 
-![Original_logos](https://user-images.githubusercontent.com/21985915/36361926-0df0aa24-156b-11e8-964e-42cb13c0de9c.png =309x321)
+<img src='https://user-images.githubusercontent.com/21985915/36361926-0df0aa24-156b-11e8-964e-42cb13c0de9c.png' width=309 height=321>
 
 
 __3) Download 800 logos from Font Awesome (black and white)__
@@ -57,7 +57,7 @@ This contains all the svg files (meaning they are stored as vectors instead of p
 python3 1_4_convert_svg_png.py --path=/Users/xxx/svgtopng/
 ```
 
-![Fontawesome_logos](https://user-images.githubusercontent.com/21985915/36363188-e31f908e-1575-11e8-9612-1b87209f1a81.png =480x350)
+<img src='https://user-images.githubusercontent.com/21985915/36363188-e31f908e-1575-11e8-9612-1b87209f1a81.png' width=480 height=350>
 
 ## Cleaning Dataset
 
@@ -117,13 +117,15 @@ python3 $CODE.py
 
 __1) DCGAN__
 
-![DCGAN]<img src='https://user-images.githubusercontent.com/21985915/36361986-a2bd0bac-156b-11e8-9d07-fb39dc348440.png' width=200 height=200>
+<img src='https://user-images.githubusercontent.com/21985915/36361986-a2bd0bac-156b-11e8-9d07-fb39dc348440.png' width=100 height=100>
 
 
 __2) WGAN-GP__
 
-![WGAN-2000]<img src='https://user-images.githubusercontent.com/21985915/36361988-a320d7e0-156b-11e8-961f-13719a3c1088.png' width=200 height=200>
+Epoch: 2000
+<img src='https://user-images.githubusercontent.com/21985915/36361988-a320d7e0-156b-11e8-961f-13719a3c1088.png' width=100 height=100>
 
-![WGAN-2500]<img src='https://user-images.githubusercontent.com/21985915/36361989-a351681a-156b-11e8-9220-c514a66e1b1d.png' width=200 height=200>
+Epoch: 2500
+<img src='https://user-images.githubusercontent.com/21985915/36361989-a351681a-156b-11e8-9220-c514a66e1b1d.png' width=100 height=100>
 
-![WGAN-3000]<img src='https://user-images.githubusercontent.com/21985915/36361990-a3885618-156b-11e8-9975-dc16a7ca323a.png' width=200 height=200>
+Epoch: 3000<img src='https://user-images.githubusercontent.com/21985915/36361990-a3885618-156b-11e8-9975-dc16a7ca323a.png' width=100 height=100>
