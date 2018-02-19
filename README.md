@@ -117,13 +117,13 @@ python3 $CODE.py
 
 __1) DCGAN__
 
-![DCGAN](https://user-images.githubusercontent.com/21985915/36361986-a2bd0bac-156b-11e8-9d07-fb39dc348440.png =200x200)
+![DCGAN]<img src='https://user-images.githubusercontent.com/21985915/36361986-a2bd0bac-156b-11e8-9d07-fb39dc348440.png' width=200 height=200>
 
 
 __2) WGAN-GP__
 
-![WGAN-2000](https://user-images.githubusercontent.com/21985915/36361988-a320d7e0-156b-11e8-961f-13719a3c1088.png =200x200)
+![WGAN-2000]<img src='https://user-images.githubusercontent.com/21985915/36361988-a320d7e0-156b-11e8-961f-13719a3c1088.png' width=200 height=200>
 
-![WGAN-2500](https://user-images.githubusercontent.com/21985915/36361989-a351681a-156b-11e8-9220-c514a66e1b1d.png =200x200)
+![WGAN-2500]<img src='https://user-images.githubusercontent.com/21985915/36361989-a351681a-156b-11e8-9220-c514a66e1b1d.png' width=200 height=200>
 
-![WGAN-3000](https://user-images.githubusercontent.com/21985915/36361990-a3885618-156b-11e8-9975-dc16a7ca323a.png =200x200)
+![WGAN-3000]<img src='https://user-images.githubusercontent.com/21985915/36361990-a3885618-156b-11e8-9975-dc16a7ca323a.png' width=200 height=200>
