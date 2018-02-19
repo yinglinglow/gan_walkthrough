@@ -30,7 +30,7 @@ To download all the images, use:
 python3 1_2_downloading_wiki_pics.py --filename=items.csv --local=True
 ```
 
-<img src='https://user-images.githubusercontent.com/21985915/36363186-dd9d4e80-1575-11e8-98d5-aa797107ee4c.png' width=821 height=470>
+<img src='https://user-images.githubusercontent.com/21985915/36363186-dd9d4e80-1575-11e8-98d5-aa797107ee4c.png' width=400>
 
 __2) Scrape 2,000 logos scraped from Google Images__
 
