@@ -30,6 +30,8 @@ To download all the images, use:
 python3 1_2_downloading_wiki_pics.py --filename=items.csv --local=True
 ```
 
+![Wiki_logos](https://user-images.githubusercontent.com/21985915/36363186-dd9d4e80-1575-11e8-98d5-aa797107ee4c.png)
+
 __2) Scrape 2,000 logos scraped from Google Images__
 
 Use this: [https://github.com/hardikvasa/google-images-download](https://github.com/hardikvasa/google-images-download) from Hardik Vasa
@@ -40,6 +42,8 @@ python3 1_3_split_pic.py --filename=abc.jpeg --col=3 --row=2
 ```
 
 Alternatively, you can simply download the folder of pictures I used, from `logos_originals_1700.zip`.
+
+![Original_logos](https://user-images.githubusercontent.com/21985915/36361926-0df0aa24-156b-11e8-964e-42cb13c0de9c.png)
 
 
 __3) Download 800 logos from Font Awesome (black and white)__
@@ -52,6 +56,8 @@ This contains all the svg files (meaning they are stored as vectors instead of p
 ```bash
 python3 1_4_convert_svg_png.py --path=/Users/xxx/svgtopng/
 ```
+
+![Fontawesome_logos](https://user-images.githubusercontent.com/21985915/36363188-e31f908e-1575-11e8-9612-1b87209f1a81.png)
 
 ## Cleaning Dataset
 
@@ -76,25 +82,47 @@ To upload to AWS S3 using AWS CLI, use:
 aws s3 cp /Users/xxx/X_train_56_1700.pkl s3://gan-project/
 ```
 
-## Developing Model
+# Set up cloud platform (if you do not have a GPU)
+
+Use `setup-aws.sh` for AWS EC2, or `setup-gcp.sh` for Google Cloud Platform.
+*In progress - DCGAN works fine on GCP but WGAN has some issues, potentially due to installation problems :(
+
+## Running the Model
 
 __1) DCGAN__
-Use:
+Use `run-model.sh` to run the model. 
+Change the variables accordingly to whichever model or Xtrain set you are using.
 
 ```bash
-python3 
-```
+git clone https://github.com/yinglinglow/gan_walkthrough.git
+cd gan_walkthrough
+mkdir gan
+mkdir gan_models
 
-__2) WGAN-GP__
-Use:
+# open tmux
+tmux
 
-```bash
-python3 
+# change your variables accordingly if necessary
+export XTRAIN=X_train_56_1700.pkl
+export CODE=WGAN_180218_11am
+export DATE=180218
+
+# run the model
+python3 $CODE.py
 ```
 
 ## Results
 
+
 __1) DCGAN__
+
+![DCGAN](https://user-images.githubusercontent.com/21985915/36361986-a2bd0bac-156b-11e8-9d07-fb39dc348440.png)
 
 
 __2) WGAN-GP__
+
+![WGAN-2000](https://user-images.githubusercontent.com/21985915/36361988-a320d7e0-156b-11e8-961f-13719a3c1088.png)
+
+![WGAN-2500](https://user-images.githubusercontent.com/21985915/36361989-a351681a-156b-11e8-9220-c514a66e1b1d.png)
+
+![WGAN-3000](https://user-images.githubusercontent.com/21985915/36361990-a3885618-156b-11e8-9975-dc16a7ca323a.png)

@@ -34,8 +34,8 @@ Results are saved in the directories: gan
 Models are saved in the directories: gan_model
     
 To save images and models to AWS directly:
-aws s3 cp -r gan/ s3://yourbucketname/
-aws s3 cp -r gan_models/ s3://yourbucketname/
+aws s3 cp gan/* s3://yourbucketname/
+aws s3 cp adv_model_2000 s3://yourbucketname/
 
 To save files from instance to local:
 
