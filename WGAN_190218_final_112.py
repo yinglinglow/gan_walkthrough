@@ -317,10 +317,10 @@ for epoch in range(10000):
         df = pd.DataFrame([epoch, discr, adv]).transpose()
 
         df.plot(x=0, y=1, figsize=(15,8))
-        plt.savefig('discriminator_' + loss_name)
+        plt.savefig('discriminator_' + d_loss_name)
 
         df.plot(x=0, y=2, figsize=(15,8))
-        plt.savefig('adversarial_' + loss_name)
+        plt.savefig('adversarial_' + d_loss_name)
 
 # upload direct to aws s3
 # bashCommand = "aws s3 cp -r gan s3://gan-project"
