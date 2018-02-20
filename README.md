@@ -8,8 +8,9 @@ Full credits go to [Rowel Atienza](https://github.com/roatienza/Deep-Learning-Ex
 
 1. [Obtaining Dataset](#obtaining-dataset)
 2. [Cleaning Dataset](#cleaning-dataset)
-3. [Running the Model](#running-the-model)
-4. [Results](#results)
+3. [Set up Environment](#set-up-environment)
+4. [Running the Model](#running-the-model)
+5. [Results](#results)
 
 ## Goal
 
@@ -82,7 +83,7 @@ To upload to AWS S3 using AWS CLI, use:
 aws s3 cp /Users/xxx/X_train_56_1700.pkl s3://gan-project/
 ```
 
-# Set up cloud platform (if you do not have a GPU)
+## Set up cloud platform (if you do not have a GPU)
 
 Use `setup-aws.sh` for AWS EC2, or `setup-gcp.sh` for Google Cloud Platform.
 *In progress - DCGAN works fine on GCP but WGAN has some issues, potentially due to installation problems :(
