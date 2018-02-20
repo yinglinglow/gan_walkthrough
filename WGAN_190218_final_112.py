@@ -91,9 +91,6 @@ def make_generator():
     model.add(BatchNormalization())
     model.add(LeakyReLU())
 
-    for l in model.layers:
-        print (l.output_shape)
-
     model.add(Reshape((dim, dim, f), input_shape=(f * dim * dim,)))
 
     model.add(Conv2DTranspose(f, conv_window, strides=stride, padding='same'))
@@ -101,6 +98,10 @@ def make_generator():
     model.add(LeakyReLU())
 
     model.add(Convolution2D(f2, conv_window, padding='same'))
+    model.add(BatchNormalization())
+    model.add(LeakyReLU())
+
+    model.add(Conv2DTranspose(f2, conv_window, strides=stride, padding='same'))
     model.add(BatchNormalization())
     model.add(LeakyReLU())
 
