@@ -5,7 +5,7 @@ changed losses, up to 112
 Base code from https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py
 
 Optimisation done for:
-56 x 56 RGB images
+112 x 112 RGB images
 
 Import pre-processed image array saved locally
 
@@ -13,7 +13,7 @@ To run:
 mkdir gan
 mkdir gan_models
 tmux
-export XTRAIN=X_train_56_1700.pkl
+export XTRAIN=X_train_1366_112.pkl
 export CODE=WGAN_190218_final
 export DATE=190218
 python3 $CODE.py
@@ -50,8 +50,8 @@ TRAINING_RATIO = 5  # the number of discriminator updates per generator update. 
 GRADIENT_PENALTY_WEIGHT = 10  # as per the paper
 
 # size of image
-img_rows = 56
-img_cols = 56
+img_rows = 112
+img_cols = 112
 channels = 3
 picklefile_path = os.environ['XTRAIN'] # path to Xtrain array
 output_dir = 'gan' # path to save outputs to
@@ -69,7 +69,7 @@ def gradient_penalty_loss(y_true, y_pred, averaged_samples, gradient_penalty_wei
 # make generator
 def make_generator():
     """Creates a generator model that takes a 100-dimensional noise vector as a "seed", 
-    and outputs images of size 56x56x3."""
+    and outputs images of size 112x112x3."""
     model = Sequential()
 
     model.add(Dense(1024, input_dim=100))
@@ -79,8 +79,8 @@ def make_generator():
     depth = 128
     f, f2 = depth, int(depth/2)
 
-    # 7 is the starting dimension. 7 * 8 = 56
-    # (8 = 2**3, where 3 is the number of conv2dtranspose layers)
+    # 7 is the starting dimension. 7 * 16 = 112
+    # (8 = 2**4, where 4 is the number of conv2dtranspose layers)
     dim = 7
 
     conv_window = 4 # height and width of convolution window, reduced from 5 to 4
