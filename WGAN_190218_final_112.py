@@ -175,6 +175,7 @@ def generate_images(generator_model, output_dir, epoch):
 
 # load X_train data as an array with shape (x, height, width, channel) where x = number of images or batch size
 X_train = np.load(picklefile_path)
+print(X_train.shape)
 
 # normalise the data
 X_train = (X_train.astype(np.float32) - 127.5) / 127.5
