@@ -125,7 +125,7 @@ def make_discriminator():
     representing whether the input is real or generated. """
 
     depth = 64 # arbitrary number of filters
-    conv_window = 4 # reduced to 4
+    conv_window = 5 # reduced to 4
     stride = 2
     channels = 3
     model = Sequential()
