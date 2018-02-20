@@ -4,7 +4,7 @@ This function resizes and centre crops all images in the path, and
 saves them into another folder with named: path_height
 
 To run: 
-python3 1_5_resize_centre.py --path=/Users/xxx/to_resize/
+python3 1_5_resize_centre.py --path=/Users/xxx/to_resize/ --size=112
 """
 
 def remove_transparency(im, bg_colour=(255, 255, 255)):
@@ -19,12 +19,12 @@ def remove_transparency(im, bg_colour=(255, 255, 255)):
         return im
 
 
-def resize_centre(path):
+def resize_centre(path, size):
     import os
     from PIL import Image, ImageOps
 
     i = 0
-    height = 56
+    height = size
 
     # check if directory to save resized images into exists, if not create it
     directory = path + '_' + str(height) + '/'
@@ -53,8 +53,10 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--path", "-p", required=True, help="Path to retrieve images from")
+    parser.add_argument("--size", required=True, help="Path to retrieve images from", type=int)
     args = parser.parse_args()
 
     path = args.path
+    size = args.size
 
-    resize_centre(path)
+    resize_centre(path, size)

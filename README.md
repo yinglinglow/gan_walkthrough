@@ -66,7 +66,7 @@ __1) Center crop and resize to 56 x 56__
 
 To center crop and resize them, use:
 ```bash
-python3 1_5_resize_centre.py --path=/Users/xxx/to_resize/
+python3 1_5_resize_centre.py --path=/Users/xxx/to_resize/ --size=56
 ```
 
 __2) Append to array__
