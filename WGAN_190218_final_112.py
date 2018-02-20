@@ -112,10 +112,6 @@ def make_generator():
     model.add(BatchNormalization())
     model.add(LeakyReLU())
 
-    model.add(Conv2DTranspose(f2, conv_window, strides=stride, padding='same'))
-    model.add(BatchNormalization())
-    model.add(LeakyReLU())
-
     # because we normalized training inputs to lie in the range [-1, 1] by minusing and dividng by 127.5,
     # the tanh function should be used for the output of the generator to ensure its output
     # also lies in this range.
@@ -134,9 +130,6 @@ def make_discriminator():
     model = Sequential()
 
     model.add(Convolution2D(depth, conv_window, padding='same', input_shape=(img_rows, img_rows, channels)))
-    model.add(LeakyReLU())
-
-    model.add(Convolution2D(depth*2, conv_window, kernel_initializer='he_normal', strides=stride)) 
     model.add(LeakyReLU())
 
     model.add(Convolution2D(depth*2, conv_window, kernel_initializer='he_normal', strides=stride)) 
