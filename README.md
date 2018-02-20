@@ -90,8 +90,6 @@ Use `setup-aws.sh` for AWS EC2, or `setup-gcp.sh` for Google Cloud Platform.
 
 ## Running the Model
 
-__1) DCGAN__
-
 Use `run-model.sh` to run the model. 
 Change the variables accordingly to whichever model or XTRAIN set you are using.
 
