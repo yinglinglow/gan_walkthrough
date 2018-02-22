@@ -58,6 +58,7 @@ img_cols = 56
 channels = 3
 picklefile_path = os.environ['XTRAIN'] # path to Xtrain array
 output_dir = 'gan' # path to save outputs to
+current_date = os.environ['DATE']
 
 # define loss
 def wasserstein_loss(y_true, y_pred):
@@ -249,7 +250,7 @@ for epoch in range(10000):
     # generate randomly rotated/shifted/flipped images from original images
     datagen = ImageDataGenerator(rotation_range=20, horizontal_flip=True)
     datagen.fit(X_train)
-    minibatches_size = BATCH_SIZE * TRAINING_RATIO #steps?
+    minibatches_size = BATCH_SIZE * TRAINING_RATIO # steps?
     for img_batch in datagen.flow(X_train, batch_size=BATCH_SIZE):
         for i in range(int(X_train.shape[0] // (BATCH_SIZE * TRAINING_RATIO))):
             # discriminator_minibatches = X_train[i * minibatches_size:(i + 1) * minibatches_size]
@@ -263,6 +264,7 @@ for epoch in range(10000):
                 discriminator_loss.append(d_loss)
             a_loss = generator_model.train_on_batch(np.random.rand(BATCH_SIZE, 100), positive_y)
             generator_loss.append(a_loss)
+            loss.append([epoch, d_loss[0], a_loss])
         break
 
     if epoch % 500 == 0:
@@ -273,13 +275,11 @@ for epoch in range(10000):
         log_mesg = "%d: [D loss: %f, acc: %f]" % (epoch, d_loss[0], d_loss[1])
         log_mesg_1 = "%s [A loss: %f]" % (log_mesg, a_loss)
         print(log_mesg_1)
-        loss.append([epoch, d_loss[0], d_loss[1]])
-
-
+        
     if epoch % 1000 == 0:
         # save discriminator model locally
         try:
-            filename = 'gan_models/discr_model_' + str(epoch)
+            filename = "gan_models/discr_model_%s_%s" %(epoch, str(current_date))
             discr_model = discriminator_model
             print('saving discriminator model locally')
             discr_model.save(filename)
@@ -289,7 +289,7 @@ for epoch in range(10000):
 
         # save adversarial model locally
         try:
-            filename = 'gan_models/adv_model_' + str(epoch)
+            filename = "gan_models/adv_model_%s_%s" %(epoch, str(current_date))
             adv_model = generator_model
             print('saving adversarial model locally')
             adv_model.save(filename)
@@ -298,8 +298,10 @@ for epoch in range(10000):
             pass
 
         # save losses locally
-        loss_name = 'loss_' + str(epoch)
-        np.save(loss_name, np.asarray(loss))
+        d_loss_name = 'd_loss_' + str(epoch)
+        a_loss_name = 'a_loss_' + str(epoch)
+        np.save('gan/' + d_loss_name, np.asarray(discriminator_loss))
+        np.save('gan/' + a_loss_name, np.asarray(generator_loss))
         print('saved losses locally')
 
         # plot losses
@@ -314,10 +316,10 @@ for epoch in range(10000):
         df = pd.DataFrame([epoch, discr, adv]).transpose()
 
         df.plot(x=0, y=1, figsize=(15,8))
-        plt.savefig('discriminator_' + loss_name)
+        plt.savefig('gan/discriminator_' + d_loss_name)
 
         df.plot(x=0, y=2, figsize=(15,8))
-        plt.savefig('adversarial_' + loss_name)
+        plt.savefig('gan/adversarial_' + a_loss_name)
 
 # upload direct to aws s3
 # bashCommand = "aws s3 cp -r gan s3://gan-project"
